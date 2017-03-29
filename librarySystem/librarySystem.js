@@ -1,6 +1,8 @@
 (function() {
   var libraryStorage = {};
   function librarySystem(libraryName, dependencies, callback) {
+    // If the length is greater than one, we are storing a library for later.
+    // We don't run the callback function, yet.
     if (arguments.length > 1) {
       // Create and store the library in a new object
       libraryStorage[libraryName] = {
@@ -26,11 +28,11 @@
       });
       // Run the callback for the library we are processing and store the returned value
       library.loaded = library.callback.apply(this, dependenciesArr);
-      // Change hasCallBackRun to 'true'
+      // Change hasCallBackRun to 'true' - prevents callback being run twice
       library.hasCallBackRun = true;
     }
 
-    // Returns the result of the callback that has been run (and stored)
+    // Returns the result of the callback that has been run (and stored). If there is no 'loaded' property, the callback hasn't been run
     return library.loaded;
   }
   window.librarySystem = librarySystem;
